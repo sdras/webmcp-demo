@@ -189,7 +189,6 @@ h2 {
   letter-spacing: -0.025em;
   line-height: 1.05;
   margin: 0 0 16px 0;
-  max-width: 22ch;
 }
 
 .section-head { margin-bottom: 48px; }
@@ -197,7 +196,7 @@ h2 {
   margin: 0;
   font-size: clamp(15px, 1.4vw, 18px);
   color: var(--text-dim);
-  max-width: 60ch;
+  /* max-width: 60ch; */
 }
 
 .btn {
@@ -735,7 +734,7 @@ h2 {
   font-family: var(--font-mono);
   font-size: 12px;
   color: var(--text-dim);
-  max-height: 180px;
+  max-height: 225px;
   overflow-y: auto;
 }
 .log-head {
@@ -1000,6 +999,7 @@ h2 {
 .code .c-key { color: #b095ff; }
 .code .c-fn { color: var(--ok-2); }
 .code .c-str { color: var(--ok); }
+.code .c-tag { color: #6e6e8a; }
 .code .c-comment { color: var(--text-faint); font-style: italic; }
 
 .diagram {
@@ -1091,7 +1091,7 @@ h2 {
   text-align: center;
   max-width: 880px;
   margin: 0 auto;
-  padding: clamp(50px, 7vw, 84px) clamp(30px, 5vw, 60px);
+  padding: clamp(30px, 5vw, 20px) clamp(30px, 5vw, 50px) clamp(60px, 5vw, 20px);
   background:
     radial-gradient(70% 80% at 50% 0%, rgba(125, 249, 197, 0.12), transparent 70%),
     linear-gradient(180deg, #15123a 0%, #0a0a18 100%);
@@ -1118,7 +1118,6 @@ h2 {
 .cta-inner .eyebrow { margin-inline: auto; }
 .cta-inner h2 {
   margin: 0 auto 16px auto;
-  max-width: 18ch;
 }
 .cta-sub {
   margin: 0 auto 32px auto;

@@ -213,25 +213,52 @@
       <header class="section-head">
         <p class="eyebrow"><span class="dot"></span> Try it yourself</p>
         <h2>Get started</h2>
+        <p class="section-sub">There are two APIs you can use to set up your website tools.</p>
       </header>
 
       <div class="start-grid">
         <div class="start-card">
           <div class="start-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="28" height="28"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            <svg viewBox="0 0 24 24" width="28" height="28"><path d="M8 6 L2 12 L8 18 M16 6 L22 12 L16 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <h3>For users</h3>
-          <p>Install a WebMCP-aware browser extension and connect it to the agent of your choice. Visit a site that registers tools and your agent gets superpowers — without scraping.</p>
-          <a class="btn btn-ghost" href="https://chromewebstore.google.com/detail/webmcp-model-context-tool/gbpdfapgefenggkahomfgkhfehlcenpd">Get the extension ↗</a>
+          <h3>Imperative API</h3>
+          <p>Define different types of tools with standard JavaScript — form input, navigation, state management, or any other function on your page. Call <code>navigator.modelContext.registerTool()</code> once per capability.</p>
+<pre class="code"><code><span class="c-key">navigator</span>.<span class="c-fn">modelContext</span>.<span class="c-fn">registerTool</span>({
+  name: <span class="c-str">"applyFilter"</span>,
+  description: <span class="c-str">"Filter the product list."</span>,
+  inputSchema: {
+    type: <span class="c-str">"object"</span>,
+    properties: {
+      category: { type: <span class="c-str">"string"</span> }
+    },
+    required: [<span class="c-str">"category"</span>]
+  },
+  execute: <span class="c-key">async</span> ({ category }) =&gt; {
+    store.<span class="c-fn">setFilter</span>(category);
+    <span class="c-key">return</span> { count: store.<span class="c-fn">visibleItems</span>().length };
+  }
+});</code></pre>
+          <a class="btn btn-ghost" href="https://github.com/webmachinelearning/webmcp#imperative-api" target="_blank" rel="noopener">Learn more ↗</a>
         </div>
 
         <div class="start-card">
           <div class="start-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="28" height="28"><path d="M8 6 L2 12 L8 18 M16 6 L22 12 L16 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg viewBox="0 0 24 24" width="28" height="28"><path d="M4 4h16v4H4zM4 10h16v4H4zM4 16h16v4H4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
           </div>
-          <h3>For developers</h3>
-          <p>Wrap the actions your users already take — book, search, filter, submit — in <code>registerTool()</code> calls. Start with three. Ship them behind a feature flag. Watch the agent traffic stop bouncing off your DOM.</p>
-          <a class="btn btn-ghost" href="#spec">Read the spec ↗</a>
+          <h3>Declarative API</h3>
+          <p>Add a few attributes to a standard HTML <code>&lt;form&gt;</code> to expose it as a WebMCP tool. The browser derives the input schema from the form's controls — no JavaScript wiring required.</p>
+<pre class="code"><code><span class="c-tag">&lt;form</span> <span class="c-key">toolname</span>=<span class="c-str">"searchCars"</span>
+      <span class="c-key">tooldescription</span>=<span class="c-str">"Search by make and model"</span>
+      <span class="c-key">toolautosubmit</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;input</span> <span class="c-key">name</span>=<span class="c-str">"make"</span>
+         <span class="c-key">toolparamdescription</span>=<span class="c-str">"e.g. BMW, Ford"</span>
+         <span class="c-key">required</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;input</span> <span class="c-key">name</span>=<span class="c-str">"model"</span>
+         <span class="c-key">toolparamdescription</span>=<span class="c-str">"e.g. 330i, F-150"</span>
+         <span class="c-key">required</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-key">type</span>=<span class="c-str">"submit"</span><span class="c-tag">&gt;</span>Search<span class="c-tag">&lt;/button&gt;</span>
+<span class="c-tag">&lt;/form&gt;</span></code></pre>
+          <a class="btn btn-ghost" href="https://github.com/webmachinelearning/webmcp/blob/main/declarative-api-explainer.md" target="_blank" rel="noopener">Learn more ↗</a>
         </div>
       </div>
     </section>
