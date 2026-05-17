@@ -606,7 +606,7 @@ h2 {
 }
 .w-day {
   position: relative;
-  aspect-ratio: 1.35 / 1;
+  aspect-ratio: 1.9 / 1;
   border: 1px solid #e7e4f1;
   border-radius: 6px;
   background: #fff;
@@ -618,7 +618,12 @@ h2 {
   display: grid;
   place-items: center;
 }
-.w-day:hover:not(:disabled) { background: #f3f0fc; border-color: #cbc4e8; transform: translateY(-1px); }
+.w-day:hover:not(:disabled) { 
+  background: #f3f0fc; 
+  border-color: #cbc4e8; 
+  transform: translateY(-1px); 
+  color: #5219a1;
+}
 .w-day:disabled { color: #c4c0d6; cursor: not-allowed; background: #faf9fd; }
 .w-day.has-slots::after {
   content: "";
