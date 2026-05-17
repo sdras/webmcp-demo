@@ -480,8 +480,8 @@ h2 {
   background: linear-gradient(180deg, #ffffff 0%, #f3f1f8 100%);
   color: #1a1138;
   border-radius: var(--radius);
-  padding: 22px;
-  min-height: 420px;
+  padding: 16px;
+  min-height: 320px;
   overflow: hidden;
 }
 
@@ -549,7 +549,7 @@ h2 {
 .widget {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
   font-family: var(--font-sans);
 }
 
@@ -560,14 +560,14 @@ h2 {
   gap: 12px;
 }
 .w-title {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: #1a1138;
   margin: 0;
 }
 .w-sub {
-  font-size: 12px;
+  font-size: 11px;
   color: #6e6e8a;
   margin: 0;
 }
@@ -576,13 +576,13 @@ h2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
+  font-size: 12px;
   color: #2b1a55;
 }
 .w-month button {
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
   border: 1px solid #e0deee;
   background: #fff;
   color: #2b1a55;
@@ -593,24 +593,24 @@ h2 {
 .w-cal {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
+  gap: 3px;
 }
 .w-dow {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #8b8aab;
   text-align: center;
-  padding: 4px 0;
+  padding: 2px 0;
 }
 .w-day {
   position: relative;
-  aspect-ratio: 1;
+  aspect-ratio: 1.35 / 1;
   border: 1px solid #e7e4f1;
-  border-radius: 8px;
+  border-radius: 6px;
   background: #fff;
-  font-size: 13px;
+  font-size: 11.5px;
   font-weight: 500;
   color: #2b1a55;
   cursor: pointer;
@@ -623,11 +623,11 @@ h2 {
 .w-day.has-slots::after {
   content: "";
   position: absolute;
-  bottom: 4px;
+  bottom: 2px;
   left: 50%;
   transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
+  width: 3px;
+  height: 3px;
   border-radius: 999px;
   background: var(--ok-2);
 }
@@ -642,14 +642,14 @@ h2 {
 .w-slots {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
+  gap: 5px;
 }
 .w-slot {
-  padding: 8px;
+  padding: 5px 6px;
   border: 1px solid #e0deee;
-  border-radius: 8px;
+  border-radius: 6px;
   background: #fff;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: #2b1a55;
   cursor: pointer;
@@ -666,23 +666,23 @@ h2 {
 .w-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 6px;
 }
 .w-form label {
   display: flex;
   flex-direction: column;
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #6e6e8a;
-  gap: 4px;
+  gap: 3px;
 }
 .w-form input {
-  padding: 8px 10px;
+  padding: 6px 8px;
   border: 1px solid #e0deee;
-  border-radius: 8px;
+  border-radius: 6px;
   font-family: inherit;
-  font-size: 13px;
+  font-size: 12px;
   color: #1a1138;
   background: #fff;
   transition: border-color 0.15s, box-shadow 0.15s;
@@ -695,13 +695,13 @@ h2 {
 .w-form .w-full { grid-column: 1 / -1; }
 .w-confirm {
   grid-column: 1 / -1;
-  padding: 11px 14px;
+  padding: 8px 12px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   background: #1a1138;
   color: #fff;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -709,12 +709,12 @@ h2 {
 .w-confirm:disabled { background: #c4c0d6; cursor: not-allowed; }
 
 .w-success {
-  padding: 12px 14px;
+  padding: 8px 12px;
   background: var(--ok-soft);
   color: #0e6f4a;
   border: 1px solid var(--ok);
-  border-radius: 8px;
-  font-size: 13px;
+  border-radius: 6px;
+  font-size: 12px;
   font-weight: 600;
   display: none;
 }
@@ -734,7 +734,7 @@ h2 {
   font-family: var(--font-mono);
   font-size: 12px;
   color: var(--text-dim);
-  max-height: 225px;
+  max-height: 400px;
   overflow-y: auto;
 }
 .log-head {
@@ -1132,6 +1132,78 @@ h2 {
   flex-wrap: wrap;
   margin-bottom: 24px;
 }
+
+.cta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin: 8px 0 28px 0;
+  text-align: left;
+}
+.cta-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  text-decoration: none;
+}
+.cta-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(125, 249, 197, 0.45);
+  transform: translateY(-2px);
+}
+.cta-card h3 {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  line-height: 1.25;
+}
+.cta-card p {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+.cta-card-host {
+  margin-top: auto;
+  padding-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ok);
+  letter-spacing: -0.01em;
+  word-break: break-all;
+}
+.cta-card-arrow {
+  display: inline-block;
+  transition: transform 0.2s;
+  color: var(--ok-2);
+}
+.cta-card:hover .cta-card-arrow { transform: translate(2px, -2px); }
+
+.cta-followup {
+  margin: 0 auto 22px auto;
+  max-width: 64ch;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-dim);
+  text-align: left;
+}
+.cta-followup strong { color: var(--text); font-weight: 600; }
+
 .cta-foot {
   font-size: 12px;
   color: var(--text-faint);

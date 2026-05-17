@@ -234,23 +234,25 @@
             <svg viewBox="0 0 24 24" width="28" height="28"><path d="M8 6 L2 12 L8 18 M16 6 L22 12 L16 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <h3>Imperative API</h3>
-          <p>Define different types of tools with standard JavaScript — form input, navigation, state management, or any other function on your page. Call <code>navigator.modelContext.registerTool()</code> once per capability.</p>
+          <p>Define different types of tools with standard JavaScript — form input, navigation, state management, or any other function on your page. The booking widget above uses this approach. Here's its <code>getAvailability</code> tool — the same one you'd see if you opened the WebMCP inspector on this page:</p>
 <pre class="code"><code><span class="c-key">navigator</span>.<span class="c-fn">modelContext</span>.<span class="c-fn">registerTool</span>({
-  name: <span class="c-str">"applyFilter"</span>,
-  description: <span class="c-str">"Filter the product list."</span>,
+  name: <span class="c-str">"getAvailability"</span>,
+  title: <span class="c-str">"Get booking availability"</span>,
+  description: <span class="c-str">"List bookable consultation times within a date range."</span>,
   inputSchema: {
     type: <span class="c-str">"object"</span>,
     properties: {
-      category: { type: <span class="c-str">"string"</span> }
+      startDate: { type: <span class="c-str">"string"</span>, format: <span class="c-str">"date"</span> },
+      endDate:   { type: <span class="c-str">"string"</span>, format: <span class="c-str">"date"</span> }
     },
-    required: [<span class="c-str">"category"</span>]
+    required: [<span class="c-str">"startDate"</span>, <span class="c-str">"endDate"</span>]
   },
-  execute: <span class="c-key">async</span> ({ category }) =&gt; {
-    store.<span class="c-fn">setFilter</span>(category);
-    <span class="c-key">return</span> { count: store.<span class="c-fn">visibleItems</span>().length };
+  annotations: { readOnlyHint: <span class="c-key">true</span> },
+  execute: <span class="c-key">async</span> ({ startDate, endDate }) =&gt; {
+    <span class="c-key">return</span> calendar.<span class="c-fn">slotsBetween</span>(startDate, endDate);
   }
 });</code></pre>
-          <a class="btn btn-ghost" href="https://github.com/webmachinelearning/webmcp#imperative-api" target="_blank" rel="noopener">Learn more ↗</a>
+          <a class="btn btn-ghost" href="https://developer.chrome.com/docs/ai/webmcp/imperative-api" target="_blank" rel="noopener">Learn more ↗</a>
         </div>
 
         <div class="start-card">
@@ -258,19 +260,21 @@
             <svg viewBox="0 0 24 24" width="28" height="28"><path d="M4 4h16v4H4zM4 10h16v4H4zM4 16h16v4H4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
           </div>
           <h3>Declarative API</h3>
-          <p>Add a few attributes to a standard HTML <code>&lt;form&gt;</code> to expose it as a WebMCP tool. The browser derives the input schema from the form's controls — no JavaScript wiring required.</p>
-<pre class="code"><code><span class="c-tag">&lt;form</span> <span class="c-key">toolname</span>=<span class="c-str">"searchCars"</span>
-      <span class="c-key">tooldescription</span>=<span class="c-str">"Search by make and model"</span>
+          <p>Add a few attributes to a standard HTML <code>&lt;form&gt;</code> to expose it as a WebMCP tool — no JavaScript wiring required. The same <code>bookSlot</code> capability from the demo above, written as plain HTML:</p>
+<pre class="code"><code><span class="c-tag">&lt;form</span> <span class="c-key">toolname</span>=<span class="c-str">"bookSlot"</span>
+      <span class="c-key">tooldescription</span>=<span class="c-str">"Reserve a 30-min consultation"</span>
       <span class="c-key">toolautosubmit</span><span class="c-tag">&gt;</span>
-  <span class="c-tag">&lt;input</span> <span class="c-key">name</span>=<span class="c-str">"make"</span>
-         <span class="c-key">toolparamdescription</span>=<span class="c-str">"e.g. BMW, Ford"</span>
-         <span class="c-key">required</span><span class="c-tag">&gt;</span>
-  <span class="c-tag">&lt;input</span> <span class="c-key">name</span>=<span class="c-str">"model"</span>
-         <span class="c-key">toolparamdescription</span>=<span class="c-str">"e.g. 330i, F-150"</span>
-         <span class="c-key">required</span><span class="c-tag">&gt;</span>
-  <span class="c-tag">&lt;button</span> <span class="c-key">type</span>=<span class="c-str">"submit"</span><span class="c-tag">&gt;</span>Search<span class="c-tag">&lt;/button&gt;</span>
+  <span class="c-tag">&lt;input</span> <span class="c-key">type</span>=<span class="c-str">"date"</span> <span class="c-key">name</span>=<span class="c-str">"date"</span>
+         <span class="c-key">toolparamdescription</span>=<span class="c-str">"Date of the booking"</span> <span class="c-key">required</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;input</span> <span class="c-key">type</span>=<span class="c-str">"time"</span> <span class="c-key">name</span>=<span class="c-str">"time"</span>
+         <span class="c-key">toolparamdescription</span>=<span class="c-str">"Start time (24h)"</span> <span class="c-key">required</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;input</span> <span class="c-key">name</span>=<span class="c-str">"name"</span>
+         <span class="c-key">toolparamdescription</span>=<span class="c-str">"Full name"</span> <span class="c-key">required</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;input</span> <span class="c-key">type</span>=<span class="c-str">"email"</span> <span class="c-key">name</span>=<span class="c-str">"email"</span>
+         <span class="c-key">toolparamdescription</span>=<span class="c-str">"Confirmation email"</span> <span class="c-key">required</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;button</span> <span class="c-key">type</span>=<span class="c-str">"submit"</span><span class="c-tag">&gt;</span>Book<span class="c-tag">&lt;/button&gt;</span>
 <span class="c-tag">&lt;/form&gt;</span></code></pre>
-          <a class="btn btn-ghost" href="https://github.com/webmachinelearning/webmcp/blob/main/declarative-api-explainer.md" target="_blank" rel="noopener">Learn more ↗</a>
+          <a class="btn btn-ghost" href="https://developer.chrome.com/docs/ai/webmcp/declarative-api" target="_blank" rel="noopener">Learn more ↗</a>
         </div>
       </div>
     </section>
@@ -278,25 +282,72 @@
     <!-- CTA -->
     <section class="cta" id="spec">
       <div class="cta-inner">
-        <p class="eyebrow eyebrow--light"><span class="dot"></span> Help shape the standard</p>
-        <h2>This is a proposal. <em>Your feedback shapes it.</em></h2>
+        <p class="eyebrow eyebrow--light"><span class="dot"></span> Build with WebMCP</p>
+        <h2>Try it. Ship it. <em>Shape it.</em></h2>
         <p class="cta-sub">
-          WebMCP is an open spec under active discussion, and in origin trial but not yet GA. It is still being shaped. If you've worked on
-          agentic UX, accessibility, or browser extensions, the working group
-          is open to feedback.
+          WebMCP is under active discussion and subject to change. If you try
+          these APIs and have feedback, we'd love to hear it.
         </p>
-        <div class="cta-buttons">
-          <a class="btn btn-primary btn-lg" href="https://github.com/webmachinelearning/webmcp" target="_blank" rel="noopener">
-            <span>Read the WebMCP spec</span>
-            <span class="btn-arrow" aria-hidden="true">↗</span>
+
+        <div class="cta-grid">
+          <a class="cta-card" href="https://github.com/webmachinelearning/webmcp?tab=readme-ov-file" target="_blank" rel="noopener">
+            <h3>Read the WebMCP explainer</h3>
+            <p>Raise questions and participate in discussion on the spec repo.</p>
+            <span class="cta-card-host">github.com/webmachinelearning/webmcp <span class="cta-card-arrow">↗</span></span>
           </a>
-          <a class="btn btn-secondary btn-lg" href="https://github.com/webmachinelearning/webmcp/issues" target="_blank" rel="noopener">
-            <span>Give feedback on GitHub</span>
-            <span class="btn-arrow" aria-hidden="true">↗</span>
+
+          <a class="cta-card" href="https://chrome.devsite.corp.google.com/docs/ai/webmcp/best-practices" target="_blank" rel="noopener">
+            <h3>WebMCP best practices</h3>
+            <p>Reference patterns for building agent-ready sites.</p>
+            <span class="cta-card-host">chrome &middot; WebMCP best practices <span class="cta-card-arrow">↗</span></span>
+          </a>
+
+          <a class="cta-card" href="https://chrome.devsite.corp.google.com/docs/ai/webmcp/use-cases" target="_blank" rel="noopener">
+            <h3>Use cases</h3>
+            <p>What kinds of tools should you expose, and when?</p>
+            <span class="cta-card-host">chrome &middot; WebMCP use cases <span class="cta-card-arrow">↗</span></span>
+          </a>
+
+          <a class="cta-card" href="https://chrome.devsite.corp.google.com/docs/ai/agents" target="_blank" rel="noopener">
+            <h3>Building agents</h3>
+            <p>How agents discover and call WebMCP tools.</p>
+            <span class="cta-card-host">chrome &middot; agents <span class="cta-card-arrow">↗</span></span>
+          </a>
+
+          <a class="cta-card" href="https://github.com/GoogleChromeLabs/web-ai-demos" target="_blank" rel="noopener">
+            <h3>Try the demos</h3>
+            <p>Working WebMCP and agentic-web code from Chrome Labs.</p>
+            <span class="cta-card-host">github.com/GoogleChromeLabs/web-ai-demos <span class="cta-card-arrow">↗</span></span>
+          </a>
+
+          <a class="cta-card" href="https://chromestatus.com/feature/5117755740913664" target="_blank" rel="noopener">
+            <h3>Chrome Status</h3>
+            <p>Review the Chrome implementation status and timeline.</p>
+            <span class="cta-card-host">chromestatus.com/feature/5117755740913664 <span class="cta-card-arrow">↗</span></span>
+          </a>
+
+          <a class="cta-card" href="http://goo.gle/chrome-ai-dev-preview-join" target="_blank" rel="noopener">
+            <h3>Early Preview Program</h3>
+            <p>Get an early look at new APIs and access our mailing list.</p>
+            <span class="cta-card-host">goo.gle/chrome-ai-dev-preview-join <span class="cta-card-arrow">↗</span></span>
+          </a>
+
+          <a class="cta-card" href="https://crbug.com/new?component=2021259" target="_blank" rel="noopener">
+            <h3>File a Chromium bug</h3>
+            <p>Hit an issue with Chrome's implementation? Let the team know.</p>
+            <span class="cta-card-host">crbug.com/new <span class="cta-card-arrow">↗</span></span>
           </a>
         </div>
+
+        <p class="cta-followup">
+          Also worth your time: debugging your registered tools with the new
+          <strong>WebMCP support in Chrome DevTools</strong>, and the proposed
+          <strong>Lighthouse audit for the agentic web</strong> — we'd love your
+          feedback on both.
+        </p>
+
         <p class="cta-foot">
-          This spec is under active development. Expect breaking changes as we iterate on the API shape and security model.
+          Some links point to early-access docs and may change as the spec evolves.
         </p>
       </div>
     </section>
