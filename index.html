@@ -121,6 +121,7 @@
                 <span class="tools-title">Registered tools</span>
                 <span class="tools-count" id="tools-count">0</span>
               </div>
+              <p class="webmcp-status" id="webmcp-status" role="status" aria-live="polite"></p>
               <ul class="tools-list" id="tools-list"></ul>
               <div class="tool-call" id="tool-call" hidden>
                 <div class="tool-call-head">Last call</div>
@@ -149,19 +150,21 @@
           </p>
 <pre class="code"><code><span class="c-key">navigator</span>.<span class="c-fn">modelContext</span>.<span class="c-fn">registerTool</span>({
   name: <span class="c-str">"bookSlot"</span>,
+  title: <span class="c-str">"Book a consultation slot"</span>,
   description: <span class="c-str">"Reserve a 30-minute consultation."</span>,
   inputSchema: {
     type: <span class="c-str">"object"</span>,
     properties: {
-      date: { type: <span class="c-str">"string"</span>, format: <span class="c-str">"date"</span> },
-      time: { type: <span class="c-str">"string"</span> },
-      name: { type: <span class="c-str">"string"</span> },
+      date:  { type: <span class="c-str">"string"</span>, format: <span class="c-str">"date"</span> },
+      time:  { type: <span class="c-str">"string"</span> },
+      name:  { type: <span class="c-str">"string"</span> },
       email: { type: <span class="c-str">"string"</span>, format: <span class="c-str">"email"</span> }
     },
     required: [<span class="c-str">"date"</span>, <span class="c-str">"time"</span>, <span class="c-str">"name"</span>, <span class="c-str">"email"</span>]
   },
-  <span class="c-key">async</span> <span class="c-fn">execute</span>({ date, time, name, email }) {
-    <span class="c-key">return</span> <span class="c-key">await</span> <span class="c-fn">api</span>.<span class="c-fn">book</span>({ date, time, name, email });
+  annotations: { readOnlyHint: <span class="c-key">false</span> },
+  execute: <span class="c-key">async</span> (input, client) =&gt; {
+    <span class="c-key">return await</span> <span class="c-fn">api</span>.<span class="c-fn">book</span>(input);
   }
 });</code></pre>
         </div>

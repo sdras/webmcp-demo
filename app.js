@@ -315,36 +315,69 @@
   const toolsCountEl = document.getElementById("tools-count");
   const toolCallEl = document.getElementById("tool-call");
   const toolCallCodeEl = document.getElementById("tool-call-code");
+  const statusEl = document.getElementById("webmcp-status");
 
-  // ----- WEBMCP SHIM -----------------------------------------
-  // A simple in-page registry. In a real WebMCP world this would
-  // be `navigator.modelContext.registerTool(...)`.
-  const webmcp = {
-    tools: [],
-    registerTool(spec) {
-      this.tools.push(spec);
-      renderToolsPanel();
-      return { unregister: () => {
-        this.tools = this.tools.filter(t => t !== spec);
-        renderToolsPanel();
-      }};
-    },
-  };
+  // ----- WEBMCP REGISTRATION ---------------------------------
+  // Detect the real WebMCP API. If present, tools are registered with the
+  // browser via navigator.modelContext.registerTool — a connected agent (or
+  // the WebMCP / Model Context Tool Inspector extension) can then call them.
+  // If absent, we fall back to an in-page registry so the visual demo still
+  // works.
+  const HAS_WEBMCP = !!(globalThis.navigator && navigator.modelContext &&
+                       typeof navigator.modelContext.registerTool === "function");
+
+  if (statusEl) {
+    if (HAS_WEBMCP) {
+      statusEl.classList.add("is-live");
+      statusEl.innerHTML = `<span class="webmcp-dot"></span> <code>navigator.modelContext</code> detected — these tools are live to your agent.`;
+    } else {
+      statusEl.classList.add("is-shim");
+      statusEl.innerHTML = `<span class="webmcp-dot"></span> Demo shim — install the <a href="https://chromewebstore.google.com/detail/webmcp-model-context-tool/gbpdfapgefenggkahomfgkhfehlcenpd" target="_blank" rel="noopener">WebMCP extension</a> or run Chrome Canary with the flag to make these real.`;
+    }
+  }
+
+  // Internal mirror, used by the on-page tools panel UI.
+  const localRegistry = [];
+
+  function registerTool(spec) {
+    localRegistry.push(spec);
+    if (HAS_WEBMCP) {
+      try {
+        navigator.modelContext.registerTool({
+          name: spec.name,
+          title: spec.title,
+          description: spec.description,
+          inputSchema: spec.inputSchema,
+          annotations: spec.annotations || {},
+          execute: spec.execute,
+        });
+      } catch (err) {
+        // duplicate name on hot reload, invalid schema, etc. — non-fatal here
+        console.warn(`[webmcp-demo] registerTool("${spec.name}") failed:`, err);
+      }
+    }
+    renderToolsPanel();
+  }
   // expose for inspection
-  window.webmcp = webmcp;
+  window.__webmcpDemoTools = localRegistry;
 
-  // ----- REGISTER WEBMCP TOOLS (on the "with" side) ----------
-  webmcp.registerTool({
+  // ----- TOOL DEFINITIONS ------------------------------------
+  // Each tool is registered with the browser AND mirrored locally so the
+  // on-page panel can display schema and animate calls.
+
+  registerTool({
     name: "getAvailability",
-    description: "List bookable times within a date range.",
+    title: "Get booking availability",
+    description: "List bookable consultation times within a date range. Returns an object keyed by ISO date with arrays of 24h HH:MM times.",
     inputSchema: {
       type: "object",
       properties: {
-        startDate: { type: "string", format: "date" },
-        endDate:   { type: "string", format: "date" },
+        startDate: { type: "string", format: "date", description: "Inclusive ISO date (YYYY-MM-DD)." },
+        endDate:   { type: "string", format: "date", description: "Inclusive ISO date (YYYY-MM-DD)." },
       },
       required: ["startDate", "endDate"],
     },
+    annotations: { readOnlyHint: true },
     async execute({ startDate, endDate }) {
       const out = {};
       Object.keys(AVAILABILITY).forEach((iso) => {
@@ -354,19 +387,21 @@
     },
   });
 
-  webmcp.registerTool({
+  registerTool({
     name: "bookSlot",
-    description: "Reserve a 30-minute consultation at a specific date and time.",
+    title: "Book a consultation slot",
+    description: "Reserve a 30-minute consultation at a specific date and time. Drives the on-page booking widget so the user sees what was booked.",
     inputSchema: {
       type: "object",
       properties: {
-        date:  { type: "string", format: "date" },
-        time:  { type: "string", description: "24h HH:MM" },
-        name:  { type: "string" },
-        email: { type: "string", format: "email" },
+        date:  { type: "string", format: "date", description: "ISO date (YYYY-MM-DD)." },
+        time:  { type: "string", description: "24h start time in HH:MM (e.g. '14:00')." },
+        name:  { type: "string", description: "Full name for the booking." },
+        email: { type: "string", format: "email", description: "Confirmation email address." },
       },
       required: ["date", "time", "name", "email"],
     },
+    annotations: { readOnlyHint: false },
     async execute({ date, time, name, email }) {
       widgetWith.jumpToMonth(new Date(date + "T00:00"));
       widgetWith.selectDate(date);
@@ -374,34 +409,44 @@
       widgetWith.setName(name);
       widgetWith.setEmail(email);
       widgetWith.confirm();
-      return { ok: true, confirmation: widgetWith.state.confirmed };
+      flashTool("bookSlot", { date, time, name, email });
+      const c = widgetWith.state.confirmed;
+      if (!c) return { ok: false, error: "Slot unavailable or input invalid." };
+      return { ok: true, confirmationId: c.id, date: c.date, time: c.time };
     },
   });
 
-  webmcp.registerTool({
+  registerTool({
     name: "cancelBooking",
+    title: "Cancel a booking",
     description: "Cancel a previously confirmed booking by its confirmation id.",
     inputSchema: {
       type: "object",
-      properties: { confirmationId: { type: "string" } },
+      properties: {
+        confirmationId: { type: "string", description: "Confirmation id returned by bookSlot, e.g. 'BK-AB12CD'." },
+      },
       required: ["confirmationId"],
     },
+    annotations: { readOnlyHint: false },
     async execute({ confirmationId }) {
+      widgetWith.reset();
+      flashTool("cancelBooking", { confirmationId });
       return { ok: true, cancelled: confirmationId };
     },
   });
 
   function renderToolsPanel() {
     toolsListEl.innerHTML = "";
-    toolsCountEl.textContent = webmcp.tools.length;
-    webmcp.tools.forEach((t) => {
+    toolsCountEl.textContent = localRegistry.length;
+    localRegistry.forEach((t) => {
       const li = document.createElement("li");
       li.className = "tool-item";
       li.dataset.tool = t.name;
       const reqs = new Set(t.inputSchema?.required || []);
       const props = Object.keys(t.inputSchema?.properties || {});
+      const ro = t.annotations?.readOnlyHint;
       li.innerHTML = `
-        <div class="tool-name">${t.name}(${props.join(", ")})</div>
+        <div class="tool-name">${t.name}(${props.join(", ")})${ro ? ' <span class="tool-ro" title="readOnlyHint: agent may call without confirmation">read-only</span>' : ""}</div>
         <div class="tool-desc">${t.description}</div>
         <div class="tool-args">
           ${props.map(p => `<span class="tool-arg ${reqs.has(p) ? "is-required" : ""}">${p}</span>`).join("")}
@@ -628,11 +673,12 @@
   }
 
   async function runWithSim(targetDateISO, targetTime, person) {
+    // Drive the WebMCP-registered tool exactly as a remote agent would.
     const args = { date: targetDateISO, time: targetTime, name: person.name, email: person.email };
-    const tool = webmcp.tools.find(t => t.name === "bookSlot");
+    const tool = localRegistry.find(t => t.name === "bookSlot");
     if (!tool) return false;
     await sleep(220);  // tiny delay so it doesn't feel instant-jarring
-    flashTool("bookSlot", args);
+    // execute() itself flashes the tool card and writes the call JSON
     const result = await tool.execute(args);
     return !!result?.ok;
   }
