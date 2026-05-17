@@ -34,13 +34,14 @@
     <section class="hero">
       <p class="eyebrow"><span class="dot"></span> A web platform proposal</p>
       <h1 class="hero-title">
-        Give agents <em>tools</em>,<br/>not <span class="strike">DOM</span>.
+        Agents use <em>tools</em>,<br/>not <span class="strike">scraping</span>.
       </h1>
-      <p class="hero-lede">
-        Today, AI agents read your page by scraping the DOM and accessibility tree —
-        brittle, slow, and easy to get wrong. <strong>WebMCP</strong> lets your site
-        declare its capabilities as structured tools that agents can call directly.
-      </p>
+      <div class="hero-lede">
+        <p>Today, AI agents read your page by scraping the DOM and accessibility tree —
+        brittle, slow, easy to get wrong, and vulnerable to prompt injection attacks.</p>
+        <p><strong>WebMCP</strong> lets your site
+        declare its capabilities as structured tools that agents can call directly, defining an explicit well lit path.</p>
+      </div>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="#compare">See the difference</a>
         <a class="btn btn-ghost" href="#how">How it works</a>
@@ -218,7 +219,7 @@
           </div>
           <h3>For users</h3>
           <p>Install a WebMCP-aware browser extension and connect it to the agent of your choice. Visit a site that registers tools and your agent gets superpowers — without scraping.</p>
-          <a class="btn btn-ghost" href="#spec">Get the extension ↗</a>
+          <a class="btn btn-ghost" href="https://chromewebstore.google.com/detail/webmcp-model-context-tool/gbpdfapgefenggkahomfgkhfehlcenpd">Get the extension ↗</a>
         </div>
 
         <div class="start-card">
@@ -238,9 +239,9 @@
         <p class="eyebrow eyebrow--light"><span class="dot"></span> Help shape the standard</p>
         <h2>This is a proposal. <em>Your feedback shapes it.</em></h2>
         <p class="cta-sub">
-          WebMCP is an open spec under active discussion. If you've worked on
+          WebMCP is an open spec under active discussion, and in origin trial but not yet GA. It is still being shaped. If you've worked on
           agentic UX, accessibility, or browser extensions, the working group
-          would love your eyes on the issues and your PRs against the draft.
+          is open to feedback.
         </p>
         <div class="cta-buttons">
           <a class="btn btn-primary btn-lg" href="https://github.com/webmachinelearning/webmcp" target="_blank" rel="noopener">
@@ -253,8 +254,7 @@
           </a>
         </div>
         <p class="cta-foot">
-          Not affiliated with any vendor. Spec links above are placeholders —
-          update to the canonical repo once it lands.
+          This spec is under active development. Expect breaking changes as we iterate on the API shape and security model.
         </p>
       </div>
     </section>
@@ -262,7 +262,7 @@
 
   <footer class="foot">
     <p>Demo by humans for humans (and the agents acting on their behalf).</p>
-    <p>Built with vanilla HTML, CSS, and JS. <a href="https://github.com" target="_blank" rel="noopener">View source ↗</a></p>
+    <p>Built with vanilla HTML, CSS, and JS. <a href="https://github.com/sdras/webmcp-demo" target="_blank" rel="noopener">View source ↗</a></p>
   </footer>
 
   <script src="app.js" defer></script>
