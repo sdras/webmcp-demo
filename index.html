@@ -121,7 +121,6 @@
                 <span class="tools-title">Registered tools</span>
                 <span class="tools-count" id="tools-count">0</span>
               </div>
-              <p class="webmcp-status" id="webmcp-status" role="status" aria-live="polite"></p>
               <ul class="tools-list" id="tools-list"></ul>
               <div class="tool-call" id="tool-call" hidden>
                 <div class="tool-call-head">Last call</div>
@@ -130,6 +129,19 @@
             </div>
           </footer>
         </article>
+      </div>
+      <div class="webmcp-status" id="webmcp-status">
+        <p id="insert-status" role="status" aria-live="polite"></p>
+        <div class="extension-info">
+          <p>With the extension, you can:</p>
+          <ul>
+            <li>See which tools are registered on a page, by monitoring the <code>navigator.modelContext</code> API.</li>
+            <li>Manually call tools and execute functions.</li>
+            <li>Verify your JSON Schema is correctly defined and that the browser can parse data as the tool expects.</li>
+            <li>View structured output or error messages returned by your tool to ensure they're written clearly and formatted correctly, so an agent can understand it.</li>
+            <li>Talk to the agent using natural language, to see if it can correctly identify and invoke the appropriate WebMCP tools.</li>
+          </ul>
+        </div>
       </div>
     </section>
 

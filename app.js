@@ -315,7 +315,7 @@
   const toolsCountEl = document.getElementById("tools-count");
   const toolCallEl = document.getElementById("tool-call");
   const toolCallCodeEl = document.getElementById("tool-call-code");
-  const statusEl = document.getElementById("webmcp-status");
+  const statusEl = document.getElementById("insert-status");
 
   // ----- WEBMCP REGISTRATION ---------------------------------
   // Detect the real WebMCP API. If present, tools are registered with the
@@ -329,10 +329,11 @@
   if (statusEl) {
     if (HAS_WEBMCP) {
       statusEl.classList.add("is-live");
-      statusEl.innerHTML = `<span class="webmcp-dot"></span> <code>navigator.modelContext</code> detected — these tools are live to your agent.`;
+      statusEl.innerHTML = `<span class="webmcp-dot"></span> Congrats! <code>navigator.modelContext</code> is detected — these tools are live to your agent. Install the install the <a href="https://chromewebstore.google.com/detail/webmcp-model-context-tool/gbpdfapgefenggkahomfgkhfehlcenpd" target="_blank" rel="noopener">WebMCP extension</a> to experiment with the right panel. For instance, you can write in natural language that would like to <strong>book an appointment on the 21st at 11 AM</strong>, and see the agent call the tools to make it happen!
+`;
     } else {
       statusEl.classList.add("is-shim");
-      statusEl.innerHTML = `<span class="webmcp-dot"></span> Demo shim — install the <a href="https://chromewebstore.google.com/detail/webmcp-model-context-tool/gbpdfapgefenggkahomfgkhfehlcenpd" target="_blank" rel="noopener">WebMCP extension</a> or run Chrome Canary with the flag to make these real.`;
+      statusEl.innerHTML = `<span class="webmcp-dot"></span> This is a simulation — install the <a href="https://chromewebstore.google.com/detail/webmcp-model-context-tool/gbpdfapgefenggkahomfgkhfehlcenpd" target="_blank" rel="noopener">WebMCP extension</a> and run Chrome with this flag enabled: <code>chrome://flags/#enable-webmcp-testing</code>. Then refresh this page and you should see "live" status — your agent can call the tools on this page!`;
     }
   }
 
