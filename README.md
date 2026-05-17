@@ -1,13 +1,12 @@
-# webmcp-demo
+# WebMCP Demo
 
-A side-by-side demo of how AI agents interact with a web page today (scraping the DOM / accessibility tree) versus a future where the page declares structured tools via **WebMCP**.
+A side-by-side demo of how AI agents interact with a web page today (scraping the DOM / accessibility tree) versus a future where the page declares structured tools via **WebMCP**. It shows:
 
-## What it shows
-
-- A booking widget rendered twice — once with annotation overlays showing the DOM nodes an agent would have to parse, once with a "Registered tools" panel showing the three tools the page exposes.
-- A **Run agent** button that drives both sides at once: the left panel animates the agent scanning the DOM step by step; the right panel just calls `bookSlot({...})`.
-- An explainer of how WebMCP works in three steps, with example code.
+- A calendar button side by side as a demo, but on the right side, you can play with it with the webMCP extension.
+- An explainer of how WebMCP works, and many links and docs
 - Calls to action linking to the spec and feedback channels.
+
+You can feel free to fork this demo as a learning tool.
 
 ## Running locally
 
@@ -27,8 +26,3 @@ Open the served URL in a browser.
 - `index.html` — page structure and copy
 - `styles.css` — visual design
 - `app.js` — booking widget, WebMCP shim, agent simulation, annotation layout
-
-## Notes
-
-- The WebMCP API in `app.js` is a **shim**: it uses an in-page `window.webmcp` registry to stand in for the proposed `navigator.modelContext.registerTool(...)` surface. Update the shim and the example code in `index.html` when the canonical spec API stabilizes.
-- The spec links in the CTA section (`https://github.com/webmachinelearning/webmcp`) are placeholders — point them at the real spec repo before publishing.
