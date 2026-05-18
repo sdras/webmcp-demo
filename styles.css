@@ -342,29 +342,74 @@ h2 {
 }
 
 .btn-run {
-  background: linear-gradient(135deg, #2b1a55 0%, #4a2380 100%);
-  color: var(--text);
-  border: 1px solid rgba(180, 130, 255, 0.4);
-  padding: 14px 22px;
-  box-shadow: 0 16px 40px -16px rgba(180, 130, 255, 0.7);
+  position: relative;
+  background: linear-gradient(135deg, #3a1393cc 0%, #6738b8cc 55%, #aa0d70b5 100%);
+  color: #fff;
+  border: 1px solid rgba(220, 180, 255, 0.3);
+  padding: 16px 26px;
   font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 0 0 4px rgba(180, 90, 255, 0.18),
+    0 16px 40px -12px rgba(214, 60, 255, 0.35),
+    0 24px 60px -16px rgba(139, 58, 255, 0.35);
+  animation: btn-run-pulse 2.4s ease-in-out infinite;
 }
-.btn-run:hover { box-shadow: 0 20px 50px -16px rgba(180, 130, 255, 0.85); }
+.btn-run::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent 30%, transparent 40%, rgba(255, 255, 255, 0.1));
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  padding: 1px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+.btn-run:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 0 0 3px rgba(180, 90, 255, 0.28),
+    0 22px 52px -12px rgba(214, 60, 255, 0.5),
+    0 32px 70px -16px rgba(139, 58, 255, 0.45);
+}
 .btn-run.is-running {
   background: linear-gradient(135deg, #4a2380, #2b1a55);
   pointer-events: none;
   opacity: 0.85;
+  animation: none;
+}
+@keyframes btn-run-pulse {
+  0%, 100% {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.15),
+      0 0 0 3px rgba(180, 90, 255, 0.18),
+      0 16px 40px -12px rgba(214, 60, 255, 0.35),
+      0 24px 60px -16px rgba(139, 58, 255, 0.25);
+  }
+  50% {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 0 0 5px rgba(180, 90, 255, 0.3),
+      0 16px 40px -12px rgba(214, 60, 255, 0.55),
+      0 24px 60px -16px rgba(139, 58, 255, 0.45);
+  }
 }
 .run-icon {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   display: inline-grid;
   place-items: center;
   border-radius: 999px;
-  background: rgba(125, 249, 197, 0.2);
-  color: var(--ok);
-  font-size: 10px;
+  background: #fff;
+  color: #6e2dff;
+  font-size: 11px;
+  font-weight: 700;
   padding-left: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .split {
