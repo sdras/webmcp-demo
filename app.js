@@ -73,8 +73,7 @@
     head.className = "w-head";
     head.innerHTML = `
       <div>
-        <p class="w-title">Book a 30-min consultation</p>
-        <p class="w-sub">Pick a day, choose a time, share your info.</p>
+        <p style="margin: 0 0 5px;"><span class="w-title">Book a 30-min consultation</span>  <span class="w-sub">Pick a day, choose a time, share your info.</span></p>
       </div>
     `;
     root.appendChild(head);

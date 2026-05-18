@@ -427,6 +427,7 @@ h2 {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 600;
+  float: right;
 }
 .panel-tag--warn {
   background: var(--warn-soft);
@@ -567,7 +568,7 @@ h2 {
   margin: 0;
 }
 .w-sub {
-  font-size: 11px;
+  font-size: 13px;
   color: #6e6e8a;
   margin: 0;
 }
@@ -715,15 +716,21 @@ h2 {
 
 .w-success {
   padding: 8px 12px;
-  background: var(--ok-soft);
+  background: var(--ok);
   color: #0e6f4a;
-  border: 1px solid var(--ok);
+  border: 1px solid #0e6f4a;;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
+  animation: pop 0.6s ease-out 1;
   display: none;
 }
 .w-success.is-visible { display: block; }
+
+@keyframes pop {
+  0%  {transform: scale(0.8);}
+  70%  {transform: scale(1.2);}
+}
 
 /* ============================================================
    AGENT LOG (without panel)
