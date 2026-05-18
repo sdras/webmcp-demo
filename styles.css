@@ -1273,13 +1273,13 @@ h2 {
 
 .foot {
   border-top: 1px solid var(--border);
-  padding: 32px clamp(20px, 4vw, 56px);
+  padding: 15px clamp(20px, 4vw, 45px);
   display: flex;
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
   color: var(--text-faint);
-  font-size: 12px;
+  font-size: 14px;
   max-width: 1400px;
   margin: 0 auto;
 }
