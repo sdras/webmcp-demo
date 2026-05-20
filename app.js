@@ -500,34 +500,45 @@
     return els[0];
   }
 
+  // Boxes are created once and cached, then re-positioned on later layouts.
+  // No entrance animation — these are static inspector-style annotations.
+  const annoCache = [];
+
   function layoutAnnotations() {
-    annotationsEl.innerHTML = "";
     const stageRect = stageWithout.getBoundingClientRect();
     ANNOTATION_DEFS.forEach((def, i) => {
+      let box = annoCache[i];
+
+      // Lazy-create the box on first layout.
+      if (!box) {
+        box = document.createElement("div");
+        box.className = "anno";
+        const label = document.createElement("div");
+        const cls = { above: "t-above", below: "t-below", left: "t-left", right: "t-right" }[def.side] || "t-above";
+        label.className = `anno-label ${cls}`;
+        label.textContent = def.label;
+        box.appendChild(label);
+        annotationsEl.appendChild(box);
+        annoCache[i] = box;
+      }
+
       const target = pickAnnotationTarget(def, stageWithout);
-      if (!target) return;
+      if (!target) {
+        // Target not in DOM right now (e.g. slot row before a date is picked).
+        box.classList.add("is-hidden");
+        return;
+      }
+      box.classList.remove("is-hidden");
+
       const r = target.getBoundingClientRect();
       const x = r.left - stageRect.left - 4;
       const y = r.top - stageRect.top - 4;
       const w = r.width + 8;
       const h = r.height + 8;
-      const box = document.createElement("div");
-      box.className = "anno";
-      box.style.left = x + "px";
-      box.style.top = y + "px";
+      box.style.setProperty("--x", x + "px");
+      box.style.setProperty("--y", y + "px");
       box.style.width = w + "px";
       box.style.height = h + "px";
-      const label = document.createElement("div");
-      const cls = { above: "t-above", below: "t-below", left: "t-left", right: "t-right" }[def.side] || "t-above";
-      label.className = `anno-label ${cls}`;
-      label.textContent = def.label;
-      box.appendChild(label);
-      annotationsEl.appendChild(box);
-
-      // staggered fade-in
-      requestAnimationFrame(() => {
-        setTimeout(() => box.classList.add("is-on"), 80 * i);
-      });
     });
   }
 

@@ -539,18 +539,18 @@ h2 {
 }
 .anno {
   position: absolute;
+  top: 0;
+  left: 0;
+  --x: 0px;
+  --y: 0px;
   border: 2.5px dashed var(--warn);
   background: rgba(255, 122, 89, 0.16);
   border-radius: 6px;
-  opacity: 0;
-  transform: scale(0.95);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transform: translate3d(var(--x), var(--y), 0);
+  transform-origin: top left;
   box-shadow: 0 0 0 4px rgba(255, 122, 89, 0.10), 0 0 16px rgba(255, 122, 89, 0.25);
 }
-.anno.is-on {
-  opacity: 1;
-  transform: scale(1);
-}
+.anno.is-hidden { display: none; }
 .anno-label {
   position: absolute;
   font-family: var(--font-mono);
