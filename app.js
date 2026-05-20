@@ -405,7 +405,7 @@
       type: "object",
       properties: {
         date:  { type: "string", format: "date", description: "ISO date (YYYY-MM-DD)." },
-        time:  { type: "string", description: "24h start time in HH:MM (e.g. '14:00')." },
+        time:  { type: "string", format: "^([01][0-9]|2[0-3]):[0-5][0-9]$", description: "24h start time in HH:MM (e.g. '14:00')." },
         name:  { type: "string", description: "Full name for the booking." },
         email: { type: "string", format: "email", description: "Confirmation email address." },
       },
