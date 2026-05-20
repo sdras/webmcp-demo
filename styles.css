@@ -768,13 +768,14 @@ h2 {
   font-size: 12px;
   font-weight: 600;
   animation: pop 0.6s ease-out 1;
+  transform: translateZ(0);
   display: none;
 }
 .w-success.is-visible { display: block; }
 
 @keyframes pop {
-  0%  {transform: scale(0.8);}
-  70%  {transform: scale(1.2);}
+  0%  {transform: scale(0.8) translateZ(0);}
+  70%  {transform: scale(1.2) translateZ(0);}
 }
 
 /* ============================================================
@@ -813,7 +814,7 @@ h2 {
   display: flex;
   gap: 8px;
   opacity: 0;
-  transform: translateX(-6px);
+  transform: translate3d(-6px, 0, 0);
   animation: log-in 0.3s ease forwards;
 }
 .log-list li::before {
