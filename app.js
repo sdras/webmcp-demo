@@ -340,7 +340,17 @@
   const localRegistry = [];
 
   function registerTool(spec) {
-    localRegistry.push(spec);
+    // Wrap execute so EVERY invocation — whether from the in-page sim or a
+    // real WebMCP agent — flashes the matching tool card and shows the call
+    // in the "Last call" panel. Tools no longer need to call flashTool() themselves.
+    const userExecute = spec.execute;
+    const wrappedExecute = async (input, client) => {
+      flashTool(spec.name, input);
+      return await userExecute(input, client);
+    };
+    const wrappedSpec = { ...spec, execute: wrappedExecute };
+    localRegistry.push(wrappedSpec);
+
     if (HAS_WEBMCP) {
       try {
         navigator.modelContext.registerTool({
@@ -349,7 +359,7 @@
           description: spec.description,
           inputSchema: spec.inputSchema,
           annotations: spec.annotations || {},
-          execute: spec.execute,
+          execute: wrappedExecute,
         });
       } catch (err) {
         // duplicate name on hot reload, invalid schema, etc. — non-fatal here
@@ -409,7 +419,6 @@
       widgetWith.setName(name);
       widgetWith.setEmail(email);
       widgetWith.confirm();
-      flashTool("bookSlot", { date, time, name, email });
       const c = widgetWith.state.confirmed;
       if (!c) return { ok: false, error: "Slot unavailable or input invalid." };
       return { ok: true, confirmationId: c.id, date: c.date, time: c.time };
@@ -430,7 +439,6 @@
     annotations: { readOnlyHint: false },
     async execute({ confirmationId }) {
       widgetWith.reset();
-      flashTool("cancelBooking", { confirmationId });
       return { ok: true, cancelled: confirmationId };
     },
   });

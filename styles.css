@@ -1054,6 +1054,7 @@ h2 {
   color: #c7c4f1;
   overflow-x: auto;
   line-height: 1.6;
+  overflow: hidden;
 }
 .code .c-key { color: #b095ff; }
 .code .c-fn { color: var(--ok-2); }

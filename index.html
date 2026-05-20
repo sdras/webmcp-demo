@@ -37,10 +37,9 @@
         Agents use <em>tools</em>,<br/>not <span class="strike">scraping</span>.
       </h1>
       <div class="hero-lede">
-        <p>Today, AI agents read your page by scraping the DOM and accessibility tree —
+        <p>Today, AI agents scrape the DOM, the accessibility tree, and take screenshots -
         brittle, slow, easy to get wrong, and vulnerable to prompt injection attacks.</p>
-        <p><strong>WebMCP</strong> lets your site
-        declare its capabilities as structured tools that agents can call directly, defining an explicit well lit path.</p>
+        <p><strong>WebMCP</strong> lets your site declare its capabilities as structured tools that agents can call directly, faster, more secure and with fewer tokens.</p>
       </div>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="#compare">See the difference</a>
@@ -248,7 +247,7 @@
     required: [<span class="c-str">"startDate"</span>, <span class="c-str">"endDate"</span>]
   },
   annotations: { readOnlyHint: <span class="c-key">true</span> },
-  execute: <span class="c-key">async</span> ({ startDate, endDate }) =&gt; {
+  execute: ({ startDate, endDate }) =&gt; {
     <span class="c-key">return</span> calendar.<span class="c-fn">slotsBetween</span>(startDate, endDate);
   }
 });</code></pre>
@@ -314,10 +313,10 @@
             <span class="cta-card-host">chrome &middot; webmcp repo <span class="cta-card-arrow">↗</span></span>
           </a>
 
-          <a class="cta-card" href="https://github.com/GoogleChromeLabs/web-ai-demos" target="_blank" rel="noopener">
-            <h3>Try the demos</h3>
-            <p>Working WebMCP and agentic-web code to fork and play with from Chrome Labs.</p>
-            <span class="cta-card-host">github.com/GoogleChromeLabs/web-ai-demos <span class="cta-card-arrow">↗</span></span>
+          <a class="cta-card" href="https://bandarra.me/projects?tag=webmcp" target="_blank" rel="noopener">
+            <h3>Try fun demos</h3>
+            <p>Working WebMCP code to fork and play with from Chrome DevRel, Andre Bandarra.</p>
+            <span class="cta-card-host">bandarra.me/projects <span class="cta-card-arrow">↗</span></span>
           </a>
 
           <a class="cta-card" href="https://chromestatus.com/feature/5117755740913664" target="_blank" rel="noopener">
