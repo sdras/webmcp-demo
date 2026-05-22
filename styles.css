@@ -1119,6 +1119,7 @@ h2 {
   flex-direction: column;
   gap: 14px;
   align-items: flex-start;
+  overflow: hidden;
 }
 .start-card h3 { margin: 0; font-size: 22px; letter-spacing: -0.015em; }
 .start-card p { color: var(--text-dim); margin: 0; font-size: 14.5px; }
