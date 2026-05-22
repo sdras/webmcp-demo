@@ -437,7 +437,10 @@
       required: ["confirmationId"],
     },
     annotations: { readOnlyHint: false },
-    async execute({ confirmationId }) {
+    execute({ confirmationId }) {
+      if (confirmationId !== widgetWith.state.confirmed?.id) {
+        return { ok: false, error: "Confirmation id invalid." };
+      }
       widgetWith.reset();
       return { ok: true, cancelled: confirmationId };
     },
